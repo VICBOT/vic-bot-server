@@ -2,14 +2,16 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
+const { PORT, HOST } = require("./config.json");
 
-server.listen(80, () => console.log(`Server started at localhost:80`));
+process.env.PORT = process.env.PORT || PORT;
+process.env.HOST = process.env.HOST || HOST;
+
+server.listen(process.env.PORT, process.env.HOST, () =>
+  console.log(`Server started at ${HOST}:${PORT}`)
+);
 
 io.on("connection", socket => {
-  socket.on("board", data => io.emit("board_data", data));
-  socket.on("ui", data => io.emit("ui_data", data));
-
-
-  socket.on("ui_output", data => io.emit("board_input",data))
-  socket.on("board_output", data => io.emit("ui_input",data))
+  socket.on("board", data => io.emit("board", data));
+  socket.on("ui", data => io.emit("ui", data));
 });
