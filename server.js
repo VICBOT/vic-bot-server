@@ -13,5 +13,8 @@ server.listen(process.env.PORT, process.env.HOST, () =>
 
 io.on("connection", socket => {
   socket.on("board", data => io.emit("board", data));
-  socket.on("ui", data => io.emit("ui", data));
+  socket.on("ui", data => {
+    console.log(data);
+    io.emit("ui", data);
+  });
 });
